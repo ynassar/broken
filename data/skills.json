@@ -1,0 +1,8 @@
+{
+	"quick_hands": {"name": "Quick Hands", "base_price": 120, "max_level": 5, "desc": "Pick up food 10% faster per level."},
+	"iron_jaw": {"name": "Iron Jaw", "base_price": 150, "max_level": 5, "desc": "Chew 15% faster per level."},
+	"big_stomach": {"name": "Big Stomach", "base_price": 200, "max_level": 5, "desc": "Stomach capacity +8% per level."},
+	"charisma": {"name": "Charisma", "base_price": 100, "max_level": 5, "desc": "B-roll request +8% success per level."},
+	"tough_guy": {"name": "Tough Guy", "base_price": 180, "max_level": 5, "desc": "Max health +15 per level."},
+	"haymaker": {"name": "Haymaker", "base_price": 180, "max_level": 5, "desc": "Fist damage +4 per level."}
+}

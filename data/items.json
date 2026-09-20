@@ -1,0 +1,33 @@
+{
+	"fork": {"name": "Fork", "kind": "gear", "slot": "utensil", "price": 40, "keep_on_death": true,
+		"desc": "Bigger bites of solid food and noodles.",
+		"bite_grams": {"solid": 55, "pieces": 45, "noodles": 35, "soup": 12, "pizza": 55, "sandwich": 55, "rice": 30, "other": 35}},
+	"spoon": {"name": "Big Spoon", "kind": "gear", "slot": "utensil", "price": 60,
+		"desc": "Scoops soup, rice and shakes properly.",
+		"bite_grams": {"solid": 40, "pieces": 40, "noodles": 25, "soup": 35, "pizza": 45, "sandwich": 45, "rice": 45, "other": 45}},
+	"chopsticks": {"name": "Chopsticks", "kind": "gear", "slot": "utensil", "price": 90,
+		"desc": "Huge noodle grabs.",
+		"bite_grams": {"solid": 35, "pieces": 45, "noodles": 55, "soup": 10, "pizza": 40, "sandwich": 40, "rice": 35, "other": 30}},
+	"ladle": {"name": "Ladle", "kind": "gear", "slot": "utensil", "price": 150,
+		"desc": "Drinks broth by the ladle.",
+		"bite_grams": {"solid": 40, "pieces": 40, "noodles": 30, "soup": 70, "pizza": 45, "sandwich": 45, "rice": 60, "other": 60}},
+
+	"water": {"name": "Water", "kind": "consumable", "price": 5, "desc": "Chew 40% faster for 8s. +4 fullness.",
+		"effect": {"chew_boost": 1.4, "chew_boost_time": 8.0, "fullness": 4.0}},
+	"soda": {"name": "Soda", "kind": "consumable", "price": 15, "desc": "Burp. -12 fullness. Max 3 per challenge.",
+		"effect": {"fullness": -12.0, "max_uses": 3}},
+	"hot_sauce": {"name": "Hot Sauce", "kind": "consumable", "price": 20, "desc": "Whole challenge: chew 25% faster, fill 15% faster.",
+		"effect": {"chew_mult": 1.25, "fill_mult": 1.15}},
+	"tums": {"name": "Tums", "kind": "consumable", "price": 30, "desc": "Stomach capacity +15 for this challenge.",
+		"effect": {"max_fullness": 15.0}},
+	"sweatpants": {"name": "Sweatpants", "kind": "gear", "slot": "outfit", "price": 120, "desc": "Loose waistband. Capacity +10 every challenge."},
+
+	"bat": {"name": "Baseball Bat", "kind": "gear", "slot": "weapon", "price": 200, "desc": "Damage 25 per swing.", "damage": 25, "attack_cooldown": 0.8},
+	"pan": {"name": "Cast Iron Pan", "kind": "gear", "slot": "weapon", "price": 350, "desc": "Damage 35 per swing.", "damage": 35, "attack_cooldown": 0.9},
+
+	"phone_camera": {"name": "Phone Camera", "kind": "gear", "slot": "camera", "price": 0, "keep_on_death": true, "desc": "Base production quality."},
+	"mic": {"name": "Shotgun Mic", "kind": "gear", "slot": "camera", "price": 300, "quality_bonus": 0.25, "desc": "Production quality +25%."},
+	"dslr": {"name": "Mirrorless Camera", "kind": "gear", "slot": "camera", "price": 900, "quality_bonus": 0.5, "desc": "Production quality +50%."},
+	"lights": {"name": "Ring Light Kit", "kind": "gear", "slot": "camera", "price": 500, "quality_bonus": 0.3, "desc": "Production quality +30%."},
+	"crew": {"name": "Camera Crew", "kind": "gear", "slot": "camera", "price": 3000, "quality_bonus": 1.0, "desc": "Production quality +100%."}
+}
