@@ -1,7 +1,7 @@
 # Contact-sheet renderer for generated assets.
 #
 #   cd <project> && xvfb-run -a -s "-screen 0 1600x900x24" \
-#       ~/.local/bin/godot --path . --rendering-driver opengl3 \
+#       ~/.local/bin/godot --path . --rendering-driver opengl3 --resolution 1600x900 \
 #       -s tools/gen_assets/preview.gd [-- --sheet=assets|food|props|interior|all]
 #
 # Lays every .glb of a sheet out on a grid, lights it with a sun + sky, looks
@@ -13,11 +13,15 @@ const FRAMES_BEFORE_SAVE := 6
 
 # sheet name -> [glb name filter, grid spacing (m), output png]
 var SHEETS := {
-	"assets": {"spacing": 16.0, "out": "qa/assets_preview.png", "cols": 8, "label": 1.2},
-	"props": {"spacing": 7.0, "out": "qa/props_preview.png", "cols": 5, "label": 0.5},
-	"interior": {"spacing": 1.6, "out": "qa/interior_preview.png", "cols": 3, "label": 0.12},
-	"food": {"spacing": 0.45, "out": "qa/food_preview.png", "cols": 6, "label": 0.03},
+	"assets": {"spacing": 16.0, "out": "qa/assets_preview.png", "cols": 8, "zoom": 1.15},
+	"props": {"spacing": 7.0, "out": "qa/props_preview.png", "cols": 5, "zoom": 1.1},
+	"interior": {"spacing": 1.6, "out": "qa/interior_preview.png", "cols": 3, "zoom": 1.4},
+	"food": {"spacing": 0.45, "out": "qa/food_preview.png", "cols": 6, "zoom": 1.2},
+	# ad-hoc close-up: -- --sheet=closeup --only=a,b,c --spacing=0.3
+	"closeup": {"spacing": 1.0, "out": "qa/closeup_preview.png", "cols": 3, "zoom": 1.3},
 }
+var _only: Array = []
+var _pitch := 35.0
 const PROPS := ["street_lamp", "palm_tree", "bench", "trash_can", "hydrant", "car_sedan",
 	"food_truck", "bus_stop", "hospital_sign", "billboard"]
 const INTERIOR := ["table", "chair", "plate", "bowl", "tray"]
@@ -33,10 +37,20 @@ func _initialize() -> void:
 	for a in OS.get_cmdline_user_args():
 		if a.begins_with("--sheet="):
 			which = a.substr(8)
+		elif a.begins_with("--only="):
+			_only = a.substr(7).split(",")
+		elif a.begins_with("--spacing="):
+			SHEETS["closeup"]["spacing"] = float(a.substr(10))
+		elif a.begins_with("--cols="):
+			SHEETS["closeup"]["cols"] = int(a.substr(7))
+		elif a.begins_with("--pitch="):
+			_pitch = float(a.substr(8))
 	if which == "all":
 		_queue = ["assets", "props", "interior", "food"]
 	else:
 		_queue = [which]
+	get_root().content_scale_mode = Window.CONTENT_SCALE_MODE_DISABLED
+	get_root().content_scale_aspect = Window.CONTENT_SCALE_ASPECT_IGNORE
 	get_root().size = Vector2i(1600, 900)
 	_next_sheet()
 
@@ -64,6 +78,8 @@ func _files_for(sheet: String) -> Array:
 				if n in INTERIOR: out.append(n)
 			"assets":
 				if not is_food: out.append(n)
+			"closeup":
+				if n in _only: out.append(n)
 	return out
 
 
@@ -105,17 +121,17 @@ func _next_sheet() -> void:
 	sky.sky_material = skymat
 	env.background_mode = Environment.BG_SKY
 	env.sky = sky
-	env.ambient_light_source = Environment.AMBIENT_SOURCE_SKY
-	env.ambient_light_sky_contribution = 1.0
-	env.ambient_light_energy = 1.0
-	env.tonemap_mode = Environment.TONE_MAPPER_FILMIC
+	env.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
+	env.ambient_light_color = Color(0.62, 0.68, 0.8)
+	env.ambient_light_energy = 0.55
+	env.tonemap_mode = Environment.TONE_MAPPER_LINEAR
 	var we := WorldEnvironment.new()
 	we.environment = env
 	_scene_root.add_child(we)
 
 	var sun := DirectionalLight3D.new()
 	sun.rotation_degrees = Vector3(-52, 35, 0)
-	sun.light_energy = 1.3
+	sun.light_energy = 1.0
 	sun.shadow_enabled = true
 	sun.directional_shadow_max_distance = 400.0
 	_scene_root.add_child(sun)
@@ -133,7 +149,7 @@ func _next_sheet() -> void:
 	pm.size = Vector2(w + spacing * 3, dpt + spacing * 3)
 	ground.mesh = pm
 	var gm := StandardMaterial3D.new()
-	gm.albedo_color = Color(0.62, 0.66, 0.6)
+	gm.albedo_color = Color(0.42, 0.46, 0.4)
 	ground.material_override = gm
 	ground.position = Vector3(w / 2, -0.01, dpt / 2)
 	_scene_root.add_child(ground)
@@ -148,11 +164,11 @@ func _next_sheet() -> void:
 		var lbl := Label3D.new()
 		lbl.text = name
 		lbl.billboard = BaseMaterial3D.BILLBOARD_ENABLED
-		lbl.pixel_size = cfg["label"] * 0.01
-		lbl.font_size = 48
-		lbl.outline_size = 12
+		lbl.pixel_size = spacing * 0.0011
+		lbl.font_size = 64
+		lbl.outline_size = 16
 		lbl.modulate = Color(1, 1, 1)
-		lbl.position = Vector3(x, -0.02 + cfg["label"] * 0.4, z + spacing * 0.42)
+		lbl.position = Vector3(x, spacing * 0.02, z + spacing * 0.45)
 		lbl.no_depth_test = true
 		_scene_root.add_child(lbl)
 		i += 1
@@ -160,14 +176,13 @@ func _next_sheet() -> void:
 	# camera looking down 35 deg at the centre of the grid
 	var cam := Camera3D.new()
 	cam.fov = 40.0
-	var centre := Vector3(w / 2, 0, dpt / 2)
-	var extent: float = max(w + spacing * 1.2, (dpt + spacing * 1.4) * 1.1)
-	var dist: float = extent / (2.0 * tan(deg_to_rad(cam.fov) / 2.0) * (1600.0 / 900.0)) * 1.05
-	var pitch := deg_to_rad(35.0)
-	cam.position = centre + Vector3(0, sin(pitch) * dist, cos(pitch) * dist)
-	cam.look_at(centre, Vector3.UP)
+	var centre := Vector3(w / 2, spacing * 0.22, dpt / 2 - spacing * 0.1)
+	var extent: float = max(w + spacing * 1.1, (dpt + spacing * 1.2) * 1.25)
+	var dist: float = extent / (2.0 * tan(deg_to_rad(cam.fov) / 2.0) * (1600.0 / 900.0)) * cfg["zoom"]
+	var pitch := deg_to_rad(_pitch)
 	cam.far = 2000.0
 	_scene_root.add_child(cam)
+	cam.look_at_from_position(centre + Vector3(0, sin(pitch) * dist, cos(pitch) * dist), centre, Vector3.UP)
 	cam.current = true
 	_frame = 0
 	print("preview: sheet %s with %d models" % [_current, n])

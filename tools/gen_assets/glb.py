@@ -179,7 +179,7 @@ class Geo:
     def jitter(self, amount, seed=0):
         """Random per-vertex displacement (hand-made lumpy look). Faces stay
         disconnected so this tears seams; use on chunky blobs only."""
-        rng = np.random.default_rng(seed)
+        rng = np.random.default_rng(abs(int(seed)))
         out = Geo()
         for mat, tris, uvs in self.items:
             flat = tris.reshape(-1, 3)
@@ -231,7 +231,7 @@ _BOX_FACES = {
 }
 
 
-def box(mat, size=(1, 1, 1), center=(0, 0, 0), mats=None, uv_scale=None, faces=None):
+def box(mat, size=(1, 1, 1), center=(0, 0, 0), mats=None, uv_scale=None, faces=None, uv_offset=(0.0, 0.0)):
     """Axis-aligned box. `mats` = {'+x': Material, '+y': ...} overrides per face.
     uv_scale = (su, sv) metres per texture tile using absolute coordinates
     (so tiles line up across separate boxes); None = 0..1 per face.
@@ -258,6 +258,7 @@ def box(mat, size=(1, 1, 1), center=(0, 0, 0), mats=None, uv_scale=None, faces=N
                 uv = np.stack([pts[:, 2] / su * (-sign), -pts[:, 1] / sv], axis=-1)
             else:            # +-z faces: u = x
                 uv = np.stack([pts[:, 0] / su * sign, -pts[:, 1] / sv], axis=-1)
+            uv = uv + np.asarray(uv_offset)
         g += quad(m, *pts, uvs=uv)
     return g
 

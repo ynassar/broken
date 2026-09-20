@@ -5,3 +5,8 @@ qa/*.png
 qa/*.log
 __pycache__/
 *.pyc
+qa/movie/
+qa/*.webm
+qa/*.avi
+qa/*.mp4
+qa/*.log

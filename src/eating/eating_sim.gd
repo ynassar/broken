@@ -91,13 +91,18 @@ func setup(p_challenge: Dictionary, profile: Dictionary = {}, options: Dictionar
 	if options.get("tums", false):
 		max_fullness += 15.0
 
-	# Build plate: N pieces of roughly PIECE_GRAMS, last one takes the remainder.
+	# Build plate: explicit layout if given, else N pieces of roughly PIECE_GRAMS.
 	pieces.clear()
-	var per := float(PIECE_GRAMS[food_type])
-	var n := maxi(1, int(round(total_grams / per)))
-	var each := total_grams / n
-	for i in n:
-		pieces.append(each)
+	if options.has("pieces"):
+		for g in options["pieces"]:
+			pieces.append(float(g))
+		total_grams = remaining_grams()
+	else:
+		var per := float(PIECE_GRAMS[food_type])
+		var n := maxi(1, int(round(total_grams / per)))
+		var each := total_grams / n
+		for i in n:
+			pieces.append(each)
 
 	phase = Phase.IDLE
 	result = Result.NONE
