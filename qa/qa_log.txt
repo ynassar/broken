@@ -5,7 +5,7 @@ prompt at door: 'E: Special #2 Spicy Ramen Challenge'
 screenshot res://qa/03_challenge_dialog.png
 screenshot res://qa/04_eating_start.png
 screenshot res://qa/05_eating_mid.png
-mid-eat: fullness 4.1, eaten 83/998, pace x1.00
+mid-eat: fullness 2.6, eaten 90/998, pace x1.00
 eat result: 1
 screenshot res://qa/06_eating_result.png
 screenshot res://qa/07_video_result.png
@@ -13,9 +13,9 @@ money $271 subs 226 hostiles ["la_001_orochon_ramen_special_2_spicy_ramen_challe
 screenshot res://qa/08_owner_hostile.png
 npc state 2 hp 150/150
 screenshot res://qa/09_combat.png
-combat: swings 15, npc dead=true, player hp 60, money $300
+combat: swings 16, npc dead=true, player hp 44, money $297
 screenshot res://qa/10_owner_ko.png
 screenshot res://qa/11_shop.png
 screenshot res://qa/12_death.png
-after death: pos (78, 0.000109, 99) money $150 inv {  }
+after death: pos (78, 0.000109, 99) money $147 inv {  }
 screenshot res://qa/13_hospital_respawn.png
