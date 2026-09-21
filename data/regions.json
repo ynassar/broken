@@ -1,0 +1,18 @@
+[
+	{"id": "us_west", "name": "US West Coast", "hub_city": "Los Angeles", "hospital_bill": 150, "flight_cost": 0,
+		"cities": ["los_angeles", "san_diego", "san_francisco", "portland", "seattle"], "npc_trait": "standard"},
+	{"id": "us_east", "name": "US East Coast", "hub_city": "New York", "hospital_bill": 300, "flight_cost": 1200,
+		"cities": ["new_york", "boston", "philadelphia", "washington", "miami"], "npc_trait": "ski_mask"},
+	{"id": "canada", "name": "Canada", "hub_city": "Toronto", "hospital_bill": 250, "flight_cost": 1500,
+		"cities": ["toronto", "montreal", "vancouver", "calgary", "ottawa"], "npc_trait": "snowball"},
+	{"id": "mexico", "name": "Mexico", "hub_city": "Mexico City", "hospital_bill": 200, "flight_cost": 900,
+		"cities": ["mexico_city", "guadalajara", "monterrey", "cancun", "tijuana"], "npc_trait": "taco"},
+	{"id": "europe", "name": "Europe", "hub_city": "Barcelona", "hospital_bill": 450, "flight_cost": 3000,
+		"cities": ["barcelona", "paris", "berlin", "rome", "amsterdam"], "npc_trait": "siesta"},
+	{"id": "uk", "name": "UK + Ireland", "hub_city": "London", "hospital_bill": 500, "flight_cost": 2800,
+		"cities": ["london", "manchester", "edinburgh", "dublin", "cardiff"], "npc_trait": "knife"},
+	{"id": "asia", "name": "Asia", "hub_city": "Hong Kong", "hospital_bill": 400, "flight_cost": 3500,
+		"cities": ["hong_kong", "tokyo", "seoul", "bangkok", "singapore"], "npc_trait": "karate"},
+	{"id": "oceania", "name": "Australia + New Zealand", "hub_city": "Sydney", "hospital_bill": 550, "flight_cost": 4000,
+		"cities": ["sydney", "melbourne", "brisbane", "auckland", "perth"], "npc_trait": "aussie"}
+]
