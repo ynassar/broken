@@ -85,9 +85,12 @@ func _build_environment() -> void:
 	sun.rotation_degrees = Vector3(-52, 35, 0)
 	sun.light_energy = 1.3
 	sun.light_color = Color(1, 0.96, 0.88)
-	sun.shadow_enabled = true
+	sun.shadow_enabled = not OS.has_feature("web")
 	sun.directional_shadow_max_distance = 120
 	add_child(sun)
+	if OS.has_feature("web"):
+		get_viewport().msaa_3d = Viewport.MSAA_DISABLED
+		e.fog_enabled = false
 
 # ---------------------------------------------------------------- interactions
 

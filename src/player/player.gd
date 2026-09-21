@@ -73,6 +73,11 @@ func set_control_enabled(v: bool) -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if not control_enabled or dead:
 		return
+	# Browsers only grant pointer lock from a user gesture, so (re)capture on click.
+	if event is InputEventMouseButton and event.pressed and Input.mouse_mode != Input.MOUSE_MODE_CAPTURED:
+		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+		get_viewport().set_input_as_handled()
+		return
 	if event is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
 		yaw -= event.relative.x * MOUSE_SENS
 		pitch = clampf(pitch - event.relative.y * MOUSE_SENS, -1.2, 0.5)

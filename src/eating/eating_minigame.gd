@@ -384,7 +384,7 @@ func _build_room() -> void:
 	light.position = Vector3(0, 2.6, 0.5)
 	light.light_energy = 0.75
 	light.omni_range = 7.0
-	light.shadow_enabled = true
+	light.shadow_enabled = not OS.has_feature("web")
 	add_child(light)
 	var fill := OmniLight3D.new()
 	fill.position = Vector3(-2, 2.0, 2)
